@@ -19,12 +19,11 @@ export const requestCancellationFlow = ai.defineFlow(
     name: 'requestCancellationFlow',
     inputSchema: CancellationRequestInputSchema,
     outputSchema: z.object({ success: z.boolean(), error: z.string().optional() }),
-    auth: {
-      // This policy ensures that Genkit will only execute this flow if a valid
-      // user authentication token is provided in the request.
-      // The `auth` object with user details will be available in the flow context.
-      required: true,
-    }
+    authPolicy: (auth, input) => {
+      if (!auth) {
+        throw new Error('User not authenticated.');
+      }
+    },
   },
   async (input, { auth }) => {
     // The auth object is guaranteed to be present because of the auth policy.
