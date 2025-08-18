@@ -16,7 +16,7 @@ import { NewsletterSubscriptionInputSchema, type NewsletterSubscriptionInput } f
 export async function handleNewsletterSubscription(input: NewsletterSubscriptionInput): Promise<{ success: boolean; error?: string }> {
   try {
     const result = await handleNewsletterSubscriptionFlow(input);
-    return { success: true, ...result };
+    return result;
   } catch (error: any) {
     console.error('Flow failed', error.stack);
     return { success: false, error: error.message || 'An unexpected error occurred.' };
