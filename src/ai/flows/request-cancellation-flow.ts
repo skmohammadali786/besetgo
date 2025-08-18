@@ -3,27 +3,33 @@
 /**
  * @fileOverview A flow to handle cancellation requests for an order.
  *
- * - requestCancellationFlow - Updates an order to include a cancellation request.
+ * - requestCancellation - Updates an order to include a cancellation request.
  * - CancellationRequestInput - The input type for the requestCancellation function.
  */
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import { doc, updateDoc, getDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { db, auth } from '@/lib/firebase';
 import { CancellationRequestInputSchema, type CancellationRequestInput } from '@/lib/types';
 
 
-export const requestCancellationFlow = ai.defineFlow(
+export async function requestCancellation(input: CancellationRequestInput): Promise<{ success: boolean; error?: string }> {
+  // Note: The Genkit Firebase plugin automatically populates the auth object
+  // when a valid Firebase App Check token is passed in the request headers.
+  // The client-side logic must ensure this header is sent.
+  return requestCancellationFlow.run(input, { auth });
+}
+
+
+const requestCancellationFlow = ai.defineFlow(
   {
     name: 'requestCancellationFlow',
     inputSchema: CancellationRequestInputSchema,
     outputSchema: z.object({ success: z.boolean(), error: z.string().optional() }),
-    authPolicy: (auth, input) => {
-      if (!auth) {
-        throw new Error('User not authenticated.');
-      }
-    },
+    auth: {
+      required: true,
+    }
   },
   async (input, { auth }) => {
     // The auth object is guaranteed to be present because of the auth policy.
