@@ -1,4 +1,3 @@
-
 'use server';
 /**
  * @fileOverview A flow to handle cancellation requests for an order.
@@ -18,7 +17,7 @@ export async function requestCancellation(input: CancellationRequestInput): Prom
   // Note: The Genkit Firebase plugin automatically populates the auth object
   // when a valid Firebase App Check token is passed in the request headers.
   // The client-side logic must ensure this header is sent.
-  const result = await requestCancellationFlow(input, { auth });
+  const result = await requestCancellationFlow(input);
   return result;
 }
 
