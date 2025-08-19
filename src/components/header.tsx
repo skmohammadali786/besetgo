@@ -81,7 +81,7 @@ export function Header({ categories }: { categories: Category[] }) {
         {/* Desktop View */}
         <div className="mr-4 hidden md:flex md:flex-1">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="font-headline text-2xl font-bold whitespace-nowrap">SHILPIK.</span>
+            <span className="font-headline text-2xl font-bold whitespace-nowrap">BESETGO.</span>
           </Link>
           <nav className="flex items-center space-x-1 text-sm font-medium">
             <DropdownMenu>
@@ -120,7 +120,7 @@ export function Header({ categories }: { categories: Category[] }) {
                 <SheetHeader className="p-4 border-b">
                    <SheetTrigger asChild>
                      <Link href="/" className="mb-2">
-                       <SheetTitle className="font-headline text-2xl font-bold text-left">SHILPIK.</SheetTitle>
+                       <SheetTitle className="font-headline text-2xl font-bold text-left">BESETGO.</SheetTitle>
                      </Link>
                    </SheetTrigger>
                 </SheetHeader>
@@ -164,7 +164,7 @@ export function Header({ categories }: { categories: Category[] }) {
             </Sheet>
             
             <Link href="/" className="flex items-center">
-              <span className="font-headline text-2xl font-bold">SHILPIK.</span>
+              <span className="font-headline text-2xl font-bold">BESETGO.</span>
             </Link>
 
             <div className="flex items-center justify-end space-x-1">

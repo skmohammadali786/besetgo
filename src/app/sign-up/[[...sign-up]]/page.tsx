@@ -46,7 +46,7 @@ export default function SignUpPage() {
         <Card className="w-full max-w-md">
              <CardHeader className="text-center">
                 <CardTitle className="font-headline text-3xl">Create an Account</CardTitle>
-                <CardDescription>Join SHILPIK. to start your fashion journey</CardDescription>
+                <CardDescription>Join BESETGO. to start your fashion journey</CardDescription>
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSignUp} className="space-y-4">

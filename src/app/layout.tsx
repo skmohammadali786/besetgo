@@ -26,8 +26,8 @@ const fontHeadline = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: 'SHILPIK: Elegant Ethnic Fashion',
-  description: 'SHILPIK.',
+  title: 'BESETGO: Elegant Ethnic Fashion',
+  description: 'BESETGO.',
 };
 
 export default async function RootLayout({

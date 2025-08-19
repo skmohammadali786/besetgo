@@ -7,7 +7,7 @@ export default function SustainabilityPage() {
       <div className="text-center mb-12">
         <h1 className="font-headline text-4xl md:text-5xl font-bold">Our Commitment to Sustainability</h1>
         <p className="text-lg text-muted-foreground mt-4 max-w-3xl mx-auto">
-          At SHILPIK., we believe that fashion can be beautiful and responsible. We are committed to mindful practices that honor our artisans, our planet, and our customers.
+          At BESETGO., we believe that fashion can be beautiful and responsible. We are committed to mindful practices that honor our artisans, our planet, and our customers.
         </p>
       </div>
 
@@ -16,7 +16,7 @@ export default function SustainabilityPage() {
             <div className="space-y-4">
                 <h2 className="font-headline text-3xl font-bold text-primary">Empowering Artisans</h2>
                 <p className="text-muted-foreground leading-relaxed">
-                    Our journey begins with the talented artisans across India who are the custodians of centuries-old craft traditions. We partner directly with craft clusters, ensuring fair wages and a supportive work environment. By eliminating middlemen, we help these communities thrive and preserve their invaluable skills for future generations. Each SHILPIK. piece you own is a testament to their dedication and artistry.
+                    Our journey begins with the talented artisans across India who are the custodians of centuries-old craft traditions. We partner directly with craft clusters, ensuring fair wages and a supportive work environment. By eliminating middlemen, we help these communities thrive and preserve their invaluable skills for future generations. Each BESETGO. piece you own is a testament to their dedication and artistry.
                 </p>
             </div>
             <div className="aspect-video overflow-hidden rounded-lg">
@@ -83,7 +83,7 @@ export default function SustainabilityPage() {
             <div className="space-y-4">
                 <h2 className="font-headline text-3xl font-bold text-primary">Our Signature Packaging: A Gift That Lasts</h2>
                 <p className="text-muted-foreground leading-relaxed">
-                    We believe the experience of receiving a SHILPIK. piece should be as special as the garment itself. That’s why your order arrives in our signature reusable can. It’s more than just packaging; it’s a beautiful, durable container designed for a second life. Use it to store jewelry, as a planter for your favorite succulent, or as a chic organizer on your desk. This is our commitment to reducing waste and adding lasting value to your purchase.
+                    We believe the experience of receiving a BESETGO. piece should be as special as the garment itself. That’s why your order arrives in our signature reusable can. It’s more than just packaging; it’s a beautiful, durable container designed for a second life. Use it to store jewelry, as a planter for your favorite succulent, or as a chic organizer on your desk. This is our commitment to reducing waste and adding lasting value to your purchase.
                 </p>
             </div>
         </div>

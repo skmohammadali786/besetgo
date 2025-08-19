@@ -6,7 +6,7 @@ export default function PrivacyPage() {
             <h1 className="font-headline text-4xl md:text-5xl font-bold">Privacy Policy</h1>
             <p className="text-lg text-muted-foreground">Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
 
-            <p>This Privacy Policy describes how SHILPIK. ("we", "us", or "our") collects, uses, and discloses your personal information when you visit, use our services, or make a purchase from besetgo.com (the "Site") or otherwise communicate with us (collectively, the "Services").</p>
+            <p>This Privacy Policy describes how BESETGO. ("we", "us", or "our") collects, uses, and discloses your personal information when you visit, use our services, or make a purchase from besetgo.com (the "Site") or otherwise communicate with us (collectively, the "Services").</p>
 
             <h2>1. Information We Collect</h2>
             <p>We collect personal information about you from a variety of sources as set out below. This information includes:</p>

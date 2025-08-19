@@ -48,7 +48,7 @@ function FooterComponent() {
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div className="lg:col-span-4 space-y-4">
-                <h3 className="font-headline text-2xl font-bold">SHILPIK.</h3>
+                <h3 className="font-headline text-2xl font-bold">BESETGO.</h3>
                 <p className="text-sm max-w-sm">
                     Elegant ethnic fashion that blends tradition with contemporary style. Handcrafted with love.
                 </p>
@@ -121,7 +121,7 @@ function FooterComponent() {
       </div>
       <div className="bg-background/50">
         <div className="container mx-auto px-4 py-4 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} SHILPIK.. All Rights Reserved. </p>
+          <p>&copy; {new Date().getFullYear()} BESETGO.. All Rights Reserved. </p>
         </div>
       </div>
     </footer>
