@@ -18,7 +18,8 @@ export async function requestCancellation(input: CancellationRequestInput): Prom
   // Note: The Genkit Firebase plugin automatically populates the auth object
   // when a valid Firebase App Check token is passed in the request headers.
   // The client-side logic must ensure this header is sent.
-  return await requestCancellationFlow.run(input, { auth });
+  const result = await requestCancellationFlow(input, { auth });
+  return result;
 }
 
 
