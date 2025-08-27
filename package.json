@@ -9,7 +9,6 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "postinstall": "patch-package"
   },
   "dependencies": {
     "@genkit-ai/firebase": "1.17.1",
