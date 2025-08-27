@@ -10,7 +10,7 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import { doc, updateDoc, getDoc } from 'firebase/firestore';
-import { db, auth } from '@/lib/firebase';
+import { db } from '@/lib/firebase';
 import { CancellationRequestInputSchema, type CancellationRequestInput } from '@/lib/types';
 
 
