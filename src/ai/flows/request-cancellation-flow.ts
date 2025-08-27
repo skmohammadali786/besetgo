@@ -27,11 +27,12 @@ const requestCancellationFlow = ai.defineFlow(
     name: 'requestCancellationFlow',
     inputSchema: CancellationRequestInputSchema,
     outputSchema: z.object({ success: z.boolean(), error: z.string().optional() }),
-    auth: {
-      required: true,
-    }
   },
-  async (input, { auth }) => {
+  async (input, ctx) => {
+    const auth = ctx.auth; // <--- if ctx has auth from runtime
+    if (!auth) {
+      return { success: false, error: 'User not authenticated.' };
+    }
     // The auth object is guaranteed to be present because of the auth policy.
     if (!auth) {
         // This check is redundant due to the auth policy, but good for type safety.
