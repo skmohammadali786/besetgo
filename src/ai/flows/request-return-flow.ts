@@ -14,10 +14,11 @@ import { db, auth } from '@/lib/firebase';
 import { ReturnRequestInputSchema, type ReturnRequestInput } from '@/lib/types';
 
 
-export async function requestReturn(input: ReturnRequestInput): Promise<{ success: boolean; error?: string }> {
- const result = await 
-  returnRequestReturnFlow.run(input, { auth });
-  return result.output;
+export async function requestReturn(
+  input: ReturnRequestInput
+): Promise<{ success: boolean; error?: string }> {
+  const result = await requestReturnFlow.run(input, { auth });
+  return result.output ?? { success: false, error: "Unknown error" };
 }
 
 const requestReturnFlow = ai.defineFlow(
