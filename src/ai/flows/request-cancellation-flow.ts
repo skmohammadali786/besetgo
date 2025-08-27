@@ -29,7 +29,7 @@ const requestCancellationFlow = ai.defineFlow(
     outputSchema: z.object({ success: z.boolean(), error: z.string().optional() }),
   },
   async (input, ctx) => {
-    const auth = ctx.auth; // <--- if ctx has auth from runtime
+    const auth = (ctx as any).auth; // <--- if ctx has auth from runtime
     if (!auth) {
       return { success: false, error: 'User not authenticated.' };
     }
