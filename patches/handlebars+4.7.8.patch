@@ -1,0 +1,14 @@
+diff --git a/node_modules/handlebars/lib/index.js b/node_modules/handlebars/lib/index.js
+index 7208f69..58e3f64 100644
+--- a/node_modules/handlebars/lib/index.js
++++ b/node_modules/handlebars/lib/index.js
+@@ -1,7 +1,4 @@
+ 'use strict';
+ 
+-/* global require, module */
+-if (typeof require !== 'undefined' && typeof exports !== 'undefined') {
+-  // For CommonJS environments
+-  exports.template = require('./handlebars/compiler/template').template;
+-}
++// CS browser builds case
++module.exports.template = require('./handlebars/compiler/template').template;
