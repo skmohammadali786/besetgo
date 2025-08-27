@@ -17,9 +17,6 @@ const requestReturnFlow = ai.defineFlow(
       success: z.boolean(),
       error: z.string().optional(),
     }),
-    auth: {
-      required: true,
-    },
   },
   async (input, { auth }) => {
     if (!auth) {
