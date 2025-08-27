@@ -1,40 +1,33 @@
 'use server';
-/**
- * @fileOverview A flow to handle return requests for an order.
- *
- * - requestReturn - Updates an order to include a return request.
- * - ReturnRequestInput - The input type for the requestReturn function.
- */
-
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import { doc, updateDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { ReturnRequestInputSchema, type ReturnRequestInput } from '@/lib/types';
 
-// ✅ Fix: merge auth into input instead of passing separately
 export async function requestReturn(
-  input: ReturnRequestInput & { auth: { uid: string } }
+  input: ReturnRequestInput
 ): Promise<{ success: boolean; error?: string }> {
-  const result = await requestReturnFlow.run({ ...input }); 
-  return result.output ?? { success: false, error: "Unknown error" };
+  try {
+    const result = await requestReturnFlow.run(input); // no .output
+    return result;
+  } catch (err) {
+    console.error('Flow execution failed:', err);
+    return { success: false, error: 'Unknown error running return request flow.' };
+  }
 }
 
 const requestReturnFlow = ai.defineFlow(
   {
     name: 'requestReturnFlow',
-    inputSchema: ReturnRequestInputSchema.extend({
-      auth: z.object({
-        uid: z.string(),
-      }),
-    }),
+    inputSchema: ReturnRequestInputSchema,
     outputSchema: z.object({ success: z.boolean(), error: z.string().optional() }),
     auth: {
       required: true,
     }
   },
-  async (input) => {
-    if (!input.auth) {
+  async (input, { auth }) => {
+    if (!auth) {
       return { success: false, error: 'User not authenticated.' };
     }
 
@@ -47,17 +40,17 @@ const requestReturnFlow = ai.defineFlow(
       }
 
       const orderData = orderSnap.data();
-      if (orderData.userId !== input.auth.uid) {
+      if (orderData.userId !== auth.uid) {
         return { success: false, error: 'User is not authorized to modify this order.' };
       }
 
       await updateDoc(orderRef, {
-        status: "Return Requested",
+        status: 'Return Requested',
         returnRequest: {
           reason: input.reason,
-          comments: input.comments || "",
+          comments: input.comments || '',
           requestDate: serverTimestamp(),
-          status: "Pending",
+          status: 'Pending',
         }
       });
 
@@ -67,4 +60,4 @@ const requestReturnFlow = ai.defineFlow(
       return { success: false, error: 'Failed to update order in the database.' };
     }
   }
-);66666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666
+);
