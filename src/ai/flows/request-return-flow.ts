@@ -1,30 +1,25 @@
 'use server';
+/**
+ * @fileOverview A flow to handle return requests for an order.
+ */
+
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import { doc, updateDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { ReturnRequestInputSchema, type ReturnRequestInput } from '@/lib/types';
 
-export async function requestReturn(
-  input: ReturnRequestInput
-): Promise<{ success: boolean; error?: string }> {
-  try {
-    const result = await requestReturnFlow.run(input); // no .output
-    return result;
-  } catch (err) {
-    console.error('Flow execution failed:', err);
-    return { success: false, error: 'Unknown error running return request flow.' };
-  }
-}
-
 const requestReturnFlow = ai.defineFlow(
   {
     name: 'requestReturnFlow',
     inputSchema: ReturnRequestInputSchema,
-    outputSchema: z.object({ success: z.boolean(), error: z.string().optional() }),
+    outputSchema: z.object({
+      success: z.boolean(),
+      error: z.string().optional(),
+    }),
     auth: {
       required: true,
-    }
+    },
   },
   async (input, { auth }) => {
     if (!auth) {
@@ -51,7 +46,7 @@ const requestReturnFlow = ai.defineFlow(
           comments: input.comments || '',
           requestDate: serverTimestamp(),
           status: 'Pending',
-        }
+        },
       });
 
       return { success: true };
@@ -61,3 +56,20 @@ const requestReturnFlow = ai.defineFlow(
     }
   }
 );
+
+export async function requestReturn(
+  input: ReturnRequestInput
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const result = await requestReturnFlow.run(input);
+
+    if ('output' in result && result.output) {
+      return result.output;
+    }
+
+    return { success: false, error: 'No output returned from flow' };
+  } catch (err) {
+    console.error('Flow execution failed:', err);
+    return { success: false, error: 'Unknown error running return request flow.' };
+  }
+}
