@@ -15,7 +15,9 @@ import { ReturnRequestInputSchema, type ReturnRequestInput } from '@/lib/types';
 
 
 export async function requestReturn(input: ReturnRequestInput): Promise<{ success: boolean; error?: string }> {
-  return requestReturnFlow.run(input, { auth });
+ const result = await 
+  returnRequestReturnFlow.run(input, { auth });
+  return result.output;
 }
 
 const requestReturnFlow = ai.defineFlow(
