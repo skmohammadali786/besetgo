@@ -16,7 +16,7 @@ async function processReturn(
   return { success: true };
 }
 
-export const requestReturnFlow = createFlow<
+export const requestReturn = defineFlow<
   { orderId: string; reason: string }, // Input schema type
   RequestReturnOutput // Output schema type
 >(
