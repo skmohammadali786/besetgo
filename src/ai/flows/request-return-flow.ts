@@ -18,8 +18,11 @@ const requestReturnFlow = ai.defineFlow(
       error: z.string().optional(),
     }),
   },
-  async (input, { auth }) => {
-    //Ensure authentication is present
+  // Use ctx, don't destructure
+  async (input, ctx) => {
+    // Tell TS that ctx *might* have auth
+    const auth = (ctx as { auth?: { uid: string } }).auth;
+
     if (!auth) {
       return { success: false, error: 'User not authenticated.' };
     }
@@ -66,11 +69,10 @@ export async function requestReturn(
   input: ReturnRequestInput
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    // Genkit flows return the output directly, not wrapped in `.output`
     const result = await requestReturnFlow.run(input);
 
     if (result) {
-      return result; // guaranteed to match { success: boolean; error?: string }
+      return result;
     }
 
     return { success: false, error: 'No output returned from flow' };
