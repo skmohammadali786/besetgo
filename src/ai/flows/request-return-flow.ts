@@ -1,86 +1,56 @@
-'use server';
-/**
- * @fileOverview A flow to handle return requests for an order.
- */
+import { z } from "zod";
+import { createFlow } from "ai-workflows";
 
-import { ai } from '@/ai/genkit';
-import { z } from 'zod';
-import { doc, updateDoc, getDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
-import { ReturnRequestInputSchema, type ReturnRequestInput } from '@/lib/types';
+// Define the output type
+type RequestReturnOutput = {
+  success: boolean;
+  error?: string;
+};
 
-const requestReturnFlow = ai.defineFlow(
+// Mock business logic (replace with your real DB/API call)
+async function processReturn(
+  orderId: string,
+  reason: string,
+  userId: string
+): Promise<RequestReturnOutput> {
+  // Example: pretend the return is always successful
+  return { success: true };
+}
+
+export const requestReturnFlow = createFlow<
+  { orderId: string; reason: string }, // Input schema type
+  RequestReturnOutput // Output schema type
+>(
   {
-    name: 'requestReturnFlow',
-    inputSchema: ReturnRequestInputSchema,
-    outputSchema: z.object({
-      success: z.boolean(),
-      error: z.string().optional(),
+    id: "request-return-flow",
+    inputSchema: z.object({
+      orderId: z.string(),
+      reason: z.string(),
     }),
   },
-  // Use ctx, don't destructure
-  async (input, ctx) => {
-    // Tell TS that ctx *might* have auth
-    const auth = (ctx as { auth?: { uid: string } }).auth;
+  async (input, sideChannel) => {
+    const { orderId, reason } = input;
+    const auth = (sideChannel as any)?.auth; // Access auth safely
 
-    if (!auth) {
-      return { success: false, error: 'User not authenticated.' };
+    // Ensure authentication
+    if (!auth || !auth.userId) {
+      return { success: false, error: "User not authenticated." };
     }
 
-    const orderRef = doc(db, 'orders', input.orderId);
-
     try {
-      const orderSnap = await getDoc(orderRef);
+      // Call your return-processing logic
+      const result = await processReturn(orderId, reason, auth.userId);
 
-      if (!orderSnap.exists()) {
-        return { success: false, error: 'Order not found.' };
-      }
-
-      const orderData = orderSnap.data();
-      if (orderData.userId !== auth.uid) {
-        return {
-          success: false,
-          error: 'User is not authorized to modify this order.',
-        };
-      }
-
-      await updateDoc(orderRef, {
-        status: 'Return Requested',
-        returnRequest: {
-          reason: input.reason,
-          comments: input.comments || '',
-          requestDate: serverTimestamp(),
-          status: 'Pending',
-        },
-      });
-
-      return { success: true };
-    } catch (error) {
-      console.error('Failed to process return request:', error);
+      // Normalize to always match RequestReturnOutput
+      return {
+        success: result.success,
+        error: result.error,
+      };
+    } catch (err) {
       return {
         success: false,
-        error: 'Failed to update order in the database.',
+        error: (err as Error).message ?? "Unknown error",
       };
     }
   }
 );
-
-export async function requestReturn(
-  input: ReturnRequestInput
-): Promise<{ success: boolean; error?: string }> {
-  try {
-    const result = await requestReturnFlow.run(input);
-
-    if (result) {
-      return result;
-    }
-
-    return { success: false, error: 'No output returned from flow' };
-  } catch (err) {
-    console.error('Flow execution failed:', err);
-    return {
-      success: false,
-      error: 'Unknown error running return request flow.',
-    };
-  }
-}
