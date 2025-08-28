@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { defineFlow } from "@vercel/ai-workflows";
+import { defineFlow } from "ai-workflows";
 // Define the output type
 type RequestReturnOutput = {
   success: boolean;
