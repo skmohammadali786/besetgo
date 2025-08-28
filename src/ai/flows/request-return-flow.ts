@@ -18,9 +18,8 @@ const requestReturnFlow = ai.defineFlow(
       error: z.string().optional(),
     }),
   },
-  async (input, ctx) => {
-    const auth = (ctx as any).auth; // 👈 FIX: access auth safely
-
+  async (input, { auth }) => {
+    //Ensure authentication is present
     if (!auth) {
       return { success: false, error: 'User not authenticated.' };
     }
@@ -29,13 +28,17 @@ const requestReturnFlow = ai.defineFlow(
 
     try {
       const orderSnap = await getDoc(orderRef);
+
       if (!orderSnap.exists()) {
         return { success: false, error: 'Order not found.' };
       }
 
       const orderData = orderSnap.data();
       if (orderData.userId !== auth.uid) {
-        return { success: false, error: 'User is not authorized to modify this order.' };
+        return {
+          success: false,
+          error: 'User is not authorized to modify this order.',
+        };
       }
 
       await updateDoc(orderRef, {
@@ -51,7 +54,10 @@ const requestReturnFlow = ai.defineFlow(
       return { success: true };
     } catch (error) {
       console.error('Failed to process return request:', error);
-      return { success: false, error: 'Failed to update order in the database.' };
+      return {
+        success: false,
+        error: 'Failed to update order in the database.',
+      };
     }
   }
 );
@@ -60,15 +66,19 @@ export async function requestReturn(
   input: ReturnRequestInput
 ): Promise<{ success: boolean; error?: string }> {
   try {
+    // Genkit flows return the output directly, not wrapped in `.output`
     const result = await requestReturnFlow.run(input);
 
-    if ('output' in result && result.output) {
-      return result.output;
+    if (result) {
+      return result; // guaranteed to match { success: boolean; error?: string }
     }
 
     return { success: false, error: 'No output returned from flow' };
   } catch (err) {
     console.error('Flow execution failed:', err);
-    return { success: false, error: 'Unknown error running return request flow.' };
+    return {
+      success: false,
+      error: 'Unknown error running return request flow.',
+    };
   }
 }
