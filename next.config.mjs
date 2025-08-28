@@ -12,6 +12,10 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    // 👇 force Netlify + Next.js to transpile ai-workflows properly
+    transpilePackages: ['ai-workflows'],
+  },
 };
 
 export default nextConfig;
