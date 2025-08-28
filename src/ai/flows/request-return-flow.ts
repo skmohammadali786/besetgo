@@ -18,7 +18,9 @@ const requestReturnFlow = ai.defineFlow(
       error: z.string().optional(),
     }),
   },
-  async (input, { auth }) => {
+  async (input, ctx) => {
+    const auth = (ctx as any).auth; // 👈 FIX: access auth safely
+
     if (!auth) {
       return { success: false, error: 'User not authenticated.' };
     }
